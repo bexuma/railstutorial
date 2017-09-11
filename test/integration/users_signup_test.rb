@@ -17,4 +17,18 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select 'form[action="/signup"]' # IMPORTANT TO INCLUDE when rename the default RESTful resources.
   end
 
+  test "valid signup information" do 
+    get signup_path
+
+    assert_difference 'User.count', 1 do
+      post signup_path, params: { user: { name: "Aldar",
+                                          email: "aldar@a.a",
+                                          password: "qwerty",
+                                          password_confirmation: "qwerty" }
+                                }
+    end
+    follow_redirect!
+    assert_template 'users/show'
+  end
+
 end
